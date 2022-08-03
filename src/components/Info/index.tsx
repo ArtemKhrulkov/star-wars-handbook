@@ -7,7 +7,7 @@ type InfoProps = {
 };
 
 const Info: FC<InfoProps> = ({ character }: InfoProps) => (
-  <Col xs={2} sm={16} md={12} lg={8} xl={16}>
+  <Col xs={16} sm={16} md={12} lg={8} xl={16}>
     <p>
       <strong>Name:</strong> {character.name}
     </p>
