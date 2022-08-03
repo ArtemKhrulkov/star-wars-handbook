@@ -17,6 +17,7 @@ const CharactersContent = observer(() => {
   const [current, setCurrent] = useState<number | undefined>(
     pageNum ? parseInt(pageNum) : undefined
   );
+
   const debouncedCurrentPage: number | undefined = useDebounce<
     number | undefined
   >(current, 600);
@@ -24,6 +25,12 @@ const CharactersContent = observer(() => {
   const onChangeHandler: PaginationProps['onChange'] = (page) => {
     setCurrent(page);
   };
+
+  useEffect(() => {
+    if (pageNum) {
+      setCurrent(parseInt(pageNum));
+    }
+  }, [pageNum]);
 
   useEffect(() => {
     if (debouncedCurrentPage) {
@@ -38,7 +45,7 @@ const CharactersContent = observer(() => {
       {characters?.count && (
         <Pagination
           style={{ display: 'flex', justifyContent: 'center', marginTop: 20 }}
-          current={current || 1}
+          current={current}
           onChange={onChangeHandler}
           total={characters?.count}
           showSizeChanger={false}
