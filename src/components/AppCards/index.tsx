@@ -1,5 +1,5 @@
 import { Card } from 'antd';
-import { getUrlId } from 'utils';
+import { getCharacterImage, getUrlId } from 'utils';
 import { FC } from 'react';
 import { CharacterType } from 'types';
 import { useNavigate } from 'react-router-dom';
@@ -20,9 +20,8 @@ const AppCards: FC<AppCardsProps> = (props) => {
       cover={
         <img
           alt={character.name}
-          src={`https://starwars-visualguide.com/assets/img/characters/${getUrlId(
-            character.url
-          )}.jpg`}
+          src={getCharacterImage(character.url)}
+          loading="eager"
         />
       }
       onClick={() => navigate(`/characters/${getUrlId(character.url)}`)}

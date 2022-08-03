@@ -10,3 +10,9 @@ export function getChangedPathname(pathname: string) {
     ? pathname.replace(/(\d+)/g, '').slice(0, -1)
     : pathname;
 }
+
+export function getCharacterImage(url: string) {
+  return `https://starwars-visualguide.com/assets/img/characters/${getUrlId(
+    url
+  )}.jpg`;
+}

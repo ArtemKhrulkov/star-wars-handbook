@@ -1,5 +1,5 @@
 import { Layout } from 'antd';
-import React, { FC } from 'react';
+import React, { FC, memo } from 'react';
 
 const { Footer } = Layout;
 
@@ -9,4 +9,4 @@ const AppFooter: FC = () => (
   </Footer>
 );
 
-export default AppFooter;
+export default memo(AppFooter);

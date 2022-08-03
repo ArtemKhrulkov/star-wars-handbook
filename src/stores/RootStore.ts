@@ -3,16 +3,16 @@ import { Api } from '../services/Api';
 
 class RootStore {
   isLoading: boolean;
-  charactersStore;
+  charactersStore: CharactersStore;
 
   constructor() {
     this.isLoading = false;
     this.charactersStore = new CharactersStore(this);
   }
 
-  async fetchResultsCountByUrl(url: string) {
+  async fetchResultsByUrl(url: string) {
     const { data } = await Api.get(url);
-    return data.count;
+    return data;
   }
 }
 

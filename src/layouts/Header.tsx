@@ -3,6 +3,7 @@ import React, { FC, memo } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { ItemType } from 'antd/es/menu/hooks/useItems';
 import { getChangedPathname } from 'utils';
+import StarWarsLogo from 'assets/logo.svg';
 
 const { Header } = Layout;
 
@@ -16,10 +17,16 @@ const AppHeader: FC<HeaderProps> = ({ menuItems }) => {
 
   const navigate = useNavigate();
   const handleClick = (item: { key: string }) => navigate(`${item.key}`);
+  const goHome = () => navigate('/');
 
   return (
     <Header style={{ position: 'fixed', zIndex: 1, width: '100%' }}>
-      <div className="logo" />
+      <div
+        style={{ width: 80, height: 80, cursor: 'pointer', float: 'left' }}
+        onClick={goHome}
+      >
+        <img src={StarWarsLogo} width={60} height={60} alt="logo" />
+      </div>
       <Menu
         theme="dark"
         mode="horizontal"
@@ -32,4 +39,4 @@ const AppHeader: FC<HeaderProps> = ({ menuItems }) => {
   );
 };
 
-export default AppHeader;
+export default memo(AppHeader);

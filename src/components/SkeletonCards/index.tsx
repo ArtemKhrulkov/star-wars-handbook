@@ -3,6 +3,16 @@ import { Space, Skeleton } from 'antd';
 const SkeletonCards = () => (
   <>
     <Space
+      direction="vertical"
+      style={{
+        display: 'flex',
+        alignItems: 'center',
+        marginBottom: 10,
+      }}
+    >
+      <Skeleton.Input style={{ width: 500 }} />
+    </Space>
+    <Space
       direction="horizontal"
       size="middle"
       style={{

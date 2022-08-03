@@ -13,25 +13,29 @@ class CharactersStore {
     this.rootStore = rootStore;
   }
 
-  async fetchCharacters() {
+  async fetchCharactersByPage(page: string | null) {
     this.rootStore.isLoading = true;
 
-    const { data } = await Api.get('/people');
+    const { data } = await Api.get(`/people/?page=${page}`);
     this.setCharacters(data);
 
     this.rootStore.isLoading = false;
   }
 
-  async fetchCharactersByPage(page: string | null) {
-    const { data } = await Api.get(`/people/?page=${page}`);
+  async fetchCharactersBySearch(search: string | null) {
+    this.rootStore.isLoading = true;
+
+    const { data } = await Api.get(`/people/?search=${search}`);
     this.setCharacters(data);
+
+    this.rootStore.isLoading = false;
   }
 
-  async fetchCharacterById(id: number) {
+  async fetchCharacterById(id: string | undefined) {
     this.rootStore.isLoading = true;
 
     const { data } = await Api.get(`/people/${id}`);
-    this.setCharacters(data);
+    this.setCurrentCharacter(data);
 
     this.rootStore.isLoading = false;
   }
@@ -44,11 +48,11 @@ class CharactersStore {
     return this.characters;
   }
 
-  setCharacter(character: CharacterType) {
+  setCurrentCharacter(character: CharacterType) {
     this.character = character;
   }
 
-  getCharacter() {
+  getCurrentCharacter() {
     return this.character;
   }
 }
