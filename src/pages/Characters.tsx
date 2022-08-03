@@ -11,27 +11,34 @@ import { useDebounce } from 'hooks/useDebounce';
 const { Search } = Input;
 
 const Characters = observer(() => {
-  const [searchValue, setSearchValue] = useState<string>('');
   const [searchParams, setSearchParams] = useSearchParams();
+  const search = searchParams.get('search');
 
+  const [searchValue, setSearchValue] = useState<string | undefined>(
+    search || undefined
+  );
   const { charactersStore, isLoading } = useStores();
   const characters = charactersStore.getCharacters();
-  const debouncedSearchValue: string = useDebounce<string>(searchValue, 500);
+  const debouncedSearchValue: string | undefined = useDebounce<
+    string | undefined
+  >(searchValue, 500);
 
   const isSearchUndefined =
     searchParams.get('search') === '' || !searchParams.has('search');
+
+  const isPageUndefined = !searchParams.has('page');
 
   const onChangeHandler = (event: ChangeEvent<HTMLInputElement>) => {
     setSearchValue(event.target.value);
   };
 
   useEffect(() => {
-    setSearchParams({ search: searchValue || '' });
+    setSearchParams({ search: debouncedSearchValue || '' });
   }, [debouncedSearchValue]);
 
   useEffect(() => {
     autorun(() => {
-      if (!searchParams.has('page') && isSearchUndefined) {
+      if (isPageUndefined && isSearchUndefined) {
         setSearchParams({ page: '1' });
       } else if (searchParams.has('search')) {
         charactersStore.fetchCharactersBySearch(searchParams.get('search'));
@@ -62,11 +69,7 @@ const Characters = observer(() => {
           placeholder="Search characters..."
           style={{ width: 500 }}
           value={searchValue}
-          defaultValue={
-            searchParams.has('search')
-              ? searchParams.get('search')?.valueOf()
-              : undefined
-          }
+          defaultValue={searchValue}
           onChange={onChangeHandler}
         />
       </Space>

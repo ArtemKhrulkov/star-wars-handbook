@@ -15,7 +15,7 @@ const CharactersContent = observer(() => {
   const pageNum = searchParams.get('page');
 
   const [current, setCurrent] = useState<number | undefined>(
-    pageNum ? parseInt(pageNum) : 1
+    pageNum ? parseInt(pageNum) : undefined
   );
   const debouncedCurrentPage: number | undefined = useDebounce<
     number | undefined
@@ -27,7 +27,7 @@ const CharactersContent = observer(() => {
 
   useEffect(() => {
     if (debouncedCurrentPage) {
-      setSearchParams({ page: current?.toString() || '1' });
+      setSearchParams({ page: debouncedCurrentPage.toString() });
     }
   }, [debouncedCurrentPage]);
 
@@ -38,7 +38,7 @@ const CharactersContent = observer(() => {
       {characters?.count && (
         <Pagination
           style={{ display: 'flex', justifyContent: 'center', marginTop: 20 }}
-          current={current}
+          current={current || 1}
           onChange={onChangeHandler}
           total={characters?.count}
           showSizeChanger={false}
