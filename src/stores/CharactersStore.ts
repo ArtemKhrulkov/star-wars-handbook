@@ -31,6 +31,18 @@ class CharactersStore {
     this.rootStore.isLoading = false;
   }
 
+  async fetchCharactersBySearchAndPage(
+    search: string | null,
+    page: string | null
+  ) {
+    this.rootStore.isLoading = true;
+
+    const { data } = await Api.get(`/people/?search=${search}&page=${page}`);
+    this.setCharacters(data);
+
+    this.rootStore.isLoading = false;
+  }
+
   async fetchCharacterById(id: string | undefined) {
     this.rootStore.isLoading = true;
 

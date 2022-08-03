@@ -1,17 +1,13 @@
 import { Layout, Menu } from 'antd';
 import React, { FC, memo } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { ItemType } from 'antd/es/menu/hooks/useItems';
 import { getChangedPathname } from 'utils';
 import StarWarsLogo from 'assets/logo.svg';
+import { menuItems } from 'data';
 
 const { Header } = Layout;
 
-type HeaderProps = {
-  menuItems: ItemType[];
-};
-
-const AppHeader: FC<HeaderProps> = ({ menuItems }) => {
+const AppHeader: FC = () => {
   const { pathname } = useLocation();
   const changedPathname = getChangedPathname(pathname);
 
@@ -22,7 +18,7 @@ const AppHeader: FC<HeaderProps> = ({ menuItems }) => {
   return (
     <Header style={{ position: 'fixed', zIndex: 1, width: '100%' }}>
       <div
-        style={{ width: 80, height: 80, cursor: 'pointer', float: 'left' }}
+        style={{ width: 80, height: 60, cursor: 'pointer', float: 'left' }}
         onClick={goHome}
       >
         <img src={StarWarsLogo} width={60} height={60} alt="logo" />

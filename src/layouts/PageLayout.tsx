@@ -3,12 +3,11 @@ import { Layout } from 'antd';
 import AppHeader from 'layouts/Header';
 import AppFooter from 'layouts/Footer';
 import AppContent from 'layouts/AppContent';
-import { menuItems } from 'data';
 
 const PageLayout = () => {
   return (
     <Layout style={{ minWidth: '100vw', minHeight: '100vh' }}>
-      <AppHeader menuItems={menuItems} />
+      <AppHeader />
       <AppContent />
       <AppFooter />
     </Layout>

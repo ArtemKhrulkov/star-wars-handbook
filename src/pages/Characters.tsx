@@ -43,7 +43,14 @@ const Characters = observer(() => {
       if (isPageUndefined && isSearchUndefined) {
         setSearchParams({ page: '1' });
       } else if (searchParams.has('search')) {
-        charactersStore.fetchCharactersBySearch(searchParams.get('search'));
+        if (searchParams.has('page')) {
+          charactersStore.fetchCharactersBySearchAndPage(
+            searchParams.get('search'),
+            searchParams.get('page')
+          );
+        } else {
+          charactersStore.fetchCharactersBySearch(searchParams.get('search'));
+        }
 
         const search = searchParams.get('search');
         setSearchValue(search || '');

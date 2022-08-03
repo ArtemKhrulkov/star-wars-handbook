@@ -29,12 +29,21 @@ const CharactersContent = observer(() => {
   useEffect(() => {
     if (pageNum) {
       setCurrent(parseInt(pageNum));
+    } else {
+      setCurrent(1);
     }
   }, [pageNum]);
 
   useEffect(() => {
     if (debouncedCurrentPage) {
-      setSearchParams({ page: debouncedCurrentPage.toString() });
+      if (searchParams.has('search')) {
+        setSearchParams({
+          search: searchParams.get('search') || '',
+          page: debouncedCurrentPage.toString(),
+        });
+      } else {
+        setSearchParams({ page: debouncedCurrentPage.toString() });
+      }
     }
   }, [debouncedCurrentPage]);
 

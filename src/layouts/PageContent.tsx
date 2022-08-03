@@ -7,14 +7,16 @@ const { Content } = Layout;
 
 const PageContent = observer(() => {
   const { pathname } = useLocation();
-  const { charactersStore } = useStores();
+  const { charactersStore, isLoading } = useStores();
   const character = charactersStore.getCurrentCharacter();
 
   const isMainPage = pathname === '/';
 
   return (
     <Content style={{ padding: '70px 10px' }}>
-      <PageHeader title={isMainPage ? 'Home' : character?.name} />
+      {!isLoading && (
+        <PageHeader title={isMainPage ? 'Home' : character?.name} />
+      )}
       <Outlet />
     </Content>
   );
