@@ -20,7 +20,7 @@ const CharacterPage = observer(() => {
       {character && (
         <>
           <Row>
-            <Col xs={2} sm={4} md={6} lg={8} xl={6}>
+            <Col xs={2} sm={10} md={6} lg={8} xl={6}>
               <img src={getCharacterImage(character.url)} alt={'Character'} />
             </Col>
             <Info character={character} />
