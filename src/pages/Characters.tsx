@@ -1,12 +1,14 @@
+import { Space, Input } from 'antd';
 import { observer } from 'mobx-react-lite';
 import { useStores } from 'hooks/useStores';
-import { Space, Input } from 'antd';
+import { useDebounce } from 'hooks/useDebounce';
+
 import { useSearchParams } from 'react-router-dom';
 import AppCards from 'components/AppCards';
+import SkeletonCards from 'components/Skeletons/SkeletonCards';
+
 import { ChangeEvent, useEffect, useState } from 'react';
 import { autorun } from 'mobx';
-import SkeletonCards from 'components/SkeletonCards';
-import { useDebounce } from 'hooks/useDebounce';
 
 const { Search } = Input;
 

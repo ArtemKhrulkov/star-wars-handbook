@@ -9,7 +9,7 @@ const { Content } = Layout;
 
 const CharactersContent = observer(() => {
   const [searchParams, setSearchParams] = useSearchParams();
-  const { charactersStore } = useStores();
+  const { charactersStore, isLoading } = useStores();
   const characters = charactersStore.getCharacters();
 
   const pageNum = searchParams.get('page');
@@ -46,6 +46,7 @@ const CharactersContent = observer(() => {
         <Pagination
           style={{ display: 'flex', justifyContent: 'center', marginTop: 20 }}
           current={current}
+          disabled={isLoading}
           onChange={onChangeHandler}
           total={characters?.count}
           showSizeChanger={false}

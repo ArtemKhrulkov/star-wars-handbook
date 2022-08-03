@@ -5,15 +5,20 @@ import { useStores } from 'hooks/useStores';
 import { Col, Row } from 'antd';
 import { getCharacterImage } from 'utils';
 import Info from 'components/Info';
+import SkeletonInfo from '../components/Skeletons/SkeletonInfo';
 
 const CharacterPage = observer(() => {
   const { id } = useParams();
-  const { charactersStore } = useStores();
+  const { charactersStore, isLoading } = useStores();
   const character = charactersStore.getCurrentCharacter();
 
   useEffect(() => {
     charactersStore.fetchCharacterById(id);
   }, []);
+
+  if (isLoading) {
+    return <SkeletonInfo />;
+  }
 
   return (
     <>
