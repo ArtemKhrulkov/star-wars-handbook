@@ -10,7 +10,7 @@ const SkeletonCards = () => (
         marginBottom: 10,
       }}
     >
-      <Skeleton.Input style={{ width: 500 }} />
+      <Skeleton.Input style={{ width: 350 }} />
     </Space>
     <Space
       direction="horizontal"

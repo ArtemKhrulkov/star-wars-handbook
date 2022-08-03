@@ -69,7 +69,8 @@ const Characters = observer(() => {
       >
         <Search
           placeholder="Search characters..."
-          style={{ width: 500 }}
+          size="large"
+          style={{ width: 350 }}
           value={searchValue}
           defaultValue={searchValue}
           onChange={onChangeHandler}
