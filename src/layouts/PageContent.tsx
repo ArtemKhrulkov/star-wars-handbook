@@ -1,6 +1,5 @@
 import { Layout, PageHeader } from 'antd';
 import { Outlet, useLocation } from 'react-router-dom';
-import React from 'react';
 import { observer } from 'mobx-react-lite';
 import { useStores } from 'hooks/useStores';
 
