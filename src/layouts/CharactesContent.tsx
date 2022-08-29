@@ -3,7 +3,6 @@ import { Outlet, useSearchParams } from 'react-router-dom';
 import React, { useEffect, useState } from 'react';
 import { useStores } from 'hooks/useStores';
 import { observer } from 'mobx-react-lite';
-import { useDebounce } from 'hooks/useDebounce';
 
 const { Content } = Layout;
 
@@ -18,10 +17,6 @@ const CharactersContent = observer(() => {
     pageNum ? parseInt(pageNum) : undefined
   );
 
-  const debouncedCurrentPage: number | undefined = useDebounce<
-    number | undefined
-  >(current, 600);
-
   const onChangeHandler: PaginationProps['onChange'] = (page) => {
     setCurrent(page);
   };
@@ -35,17 +30,17 @@ const CharactersContent = observer(() => {
   }, [pageNum]);
 
   useEffect(() => {
-    if (debouncedCurrentPage) {
+    if (current) {
       if (searchParams.has('search')) {
         setSearchParams({
           search: searchParams.get('search') || '',
-          page: debouncedCurrentPage.toString(),
+          page: current.toString(),
         });
       } else {
-        setSearchParams({ page: debouncedCurrentPage.toString() });
+        setSearchParams({ page: current.toString() });
       }
     }
-  }, [debouncedCurrentPage]);
+  }, [current]);
 
   return (
     <Content style={{ padding: '70px 10px' }}>
