@@ -1,15 +1,20 @@
 import { Layout, PageHeader, Pagination, PaginationProps } from 'antd';
 import { Outlet, useSearchParams } from 'react-router-dom';
-import React, { useEffect, useState } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import { useStores } from 'hooks/useStores';
 import { observer } from 'mobx-react-lite';
 
 const { Content } = Layout;
 
-const CharactersContent = observer(() => {
+type EntitiesContentProps = {
+  title: string;
+};
+
+const EntitiesContent: FC<EntitiesContentProps> = observer((props) => {
+  const { title } = props;
   const [searchParams, setSearchParams] = useSearchParams();
-  const { charactersStore, isLoading } = useStores();
-  const characters = charactersStore.getCharacters();
+  const { getEntities, isLoading } = useStores();
+  const entities = getEntities(title.toLowerCase());
 
   const pageNum = searchParams.get('page');
 
@@ -44,15 +49,15 @@ const CharactersContent = observer(() => {
 
   return (
     <Content style={{ padding: '70px 10px' }}>
-      <PageHeader title="Characters" />
+      <PageHeader title={title} />
       <Outlet />
-      {characters?.count && (
+      {entities?.count && (
         <Pagination
           style={{ display: 'flex', justifyContent: 'center', marginTop: 20 }}
           current={current}
           disabled={isLoading}
           onChange={onChangeHandler}
-          total={characters?.count}
+          total={entities?.count}
           showSizeChanger={false}
         />
       )}
@@ -60,4 +65,4 @@ const CharactersContent = observer(() => {
   );
 });
 
-export default CharactersContent;
+export default EntitiesContent;

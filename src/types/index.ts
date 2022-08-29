@@ -12,6 +12,13 @@ export type CharactersType = {
   results: CharacterType[];
 };
 
+export type FilmsType = {
+  count: number;
+  next?: string;
+  previous?: string;
+  results: FilmType[];
+};
+
 export type CharacterType = {
   birth_year: string;
   created: Date;
@@ -30,3 +37,22 @@ export type CharacterType = {
   url: string;
   vehicles: string[];
 };
+
+export type FilmType = {
+  characters: string[];
+  created: Date;
+  director: string;
+  edited: Date;
+  episode_id: number;
+  opening_crawl: string;
+  planets: string[];
+  producer: string;
+  release_date: string;
+  species: string[];
+  starships: string[];
+  title: string;
+  url: string;
+  vehicles: string[];
+};
+
+export type EntityType = CharacterType | FilmType;

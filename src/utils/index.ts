@@ -11,8 +11,8 @@ export function getChangedPathname(pathname: string) {
     : pathname;
 }
 
-export function getCharacterImage(url: string) {
-  return `https://starwars-visualguide.com/assets/img/characters/${getUrlId(
+export function getEntityImage(name: string, url: string) {
+  return `https://starwars-visualguide.com/assets/img/${name}/${getUrlId(
     url
   )}.jpg`;
 }

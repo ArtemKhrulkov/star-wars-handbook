@@ -4,23 +4,30 @@ import { useStores } from 'hooks/useStores';
 import { useDebounce } from 'hooks/useDebounce';
 
 import { useSearchParams } from 'react-router-dom';
-import AppCards from 'components/AppCards';
-import SkeletonCards from 'components/Skeletons/SkeletonCards';
+import { AppCards } from 'components/AppCards';
+import { SkeletonCards } from 'components/Skeletons';
 
-import { ChangeEvent, useEffect, useState } from 'react';
-import { autorun } from 'mobx';
+import { ChangeEvent, FC, useEffect, useState } from 'react';
 
 const { Search } = Input;
 
-const Characters = observer(() => {
+type EntitiesProps = {
+  name: string;
+};
+
+const Entities: FC<EntitiesProps> = observer((props) => {
+  const { name } = props;
   const [searchParams, setSearchParams] = useSearchParams();
   const search = searchParams.get('search');
 
   const [searchValue, setSearchValue] = useState<string | undefined>(
     search || undefined
   );
-  const { charactersStore, isLoading } = useStores();
-  const characters = charactersStore.getCharacters();
+
+  const rootStore = useStores();
+  const { isLoading } = rootStore;
+
+  const entities = rootStore.getEntities(name);
   const debouncedSearchValue: string | undefined = useDebounce<
     string | undefined
   >(searchValue, 500);
@@ -39,25 +46,24 @@ const Characters = observer(() => {
   }, [debouncedSearchValue]);
 
   useEffect(() => {
-    autorun(() => {
-      if (isPageUndefined && isSearchUndefined) {
-        setSearchParams({ page: '1' });
-      } else if (searchParams.has('search')) {
-        if (searchParams.has('page')) {
-          charactersStore.fetchCharactersBySearchAndPage(
-            searchParams.get('search'),
-            searchParams.get('page')
-          );
-        } else {
-          charactersStore.fetchCharactersBySearch(searchParams.get('search'));
-        }
-
-        const search = searchParams.get('search');
-        setSearchValue(search || '');
+    if (isPageUndefined && isSearchUndefined) {
+      setSearchParams({ page: '1' });
+    } else if (searchParams.has('search')) {
+      if (searchParams.has('page')) {
+        rootStore.fetchEntitiesBySearchAndPage(
+          name,
+          searchParams.get('search'),
+          searchParams.get('page')
+        );
       } else {
-        charactersStore.fetchCharactersByPage(searchParams.get('page'));
+        rootStore.fetchEntitiesBySearch(name, searchParams.get('search'));
       }
-    });
+
+      const search = searchParams.get('search');
+      setSearchValue(search || '');
+    } else {
+      rootStore.fetchEntitiesByPage(name, searchParams.get('page'));
+    }
   }, [searchParams]);
 
   if (isLoading) {
@@ -93,12 +99,16 @@ const Characters = observer(() => {
           alignItems: 'center',
         }}
       >
-        {characters?.results?.map((character) => (
-          <AppCards key={character.name} character={character} />
+        {entities?.results?.map((entity) => (
+          <AppCards
+            key={entity.created.toString()}
+            name={name}
+            entity={entity}
+          />
         ))}
       </Space>
     </>
   );
 });
 
-export default Characters;
+export default Entities;

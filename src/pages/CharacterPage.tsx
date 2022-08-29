@@ -1,19 +1,25 @@
 import { observer } from 'mobx-react-lite';
 import { useParams } from 'react-router-dom';
-import { useEffect } from 'react';
+import { FC, useEffect } from 'react';
 import { useStores } from 'hooks/useStores';
 import { Col, Row } from 'antd';
-import { getCharacterImage } from 'utils';
-import Info from 'components/Info';
-import SkeletonInfo from '../components/Skeletons/SkeletonInfo';
+import { getEntityImage } from 'utils';
+import { Info } from 'components/Info';
+import { SkeletonInfo } from 'components/Skeletons';
 
-const CharacterPage = observer(() => {
+type EntityPage = {
+  name: string;
+};
+
+const CharacterPage: FC<EntityPage> = observer((props) => {
+  const { name } = props;
   const { id } = useParams();
-  const { charactersStore, isLoading } = useStores();
-  const character = charactersStore.getCurrentCharacter();
+  const rootStore = useStores();
+  const { isLoading } = rootStore;
+  const entity = rootStore.getCurrentEntity(name);
 
   useEffect(() => {
-    charactersStore.fetchCharacterById(id);
+    rootStore.fetchEntityById(name, id);
   }, []);
 
   if (isLoading) {
@@ -22,13 +28,13 @@ const CharacterPage = observer(() => {
 
   return (
     <>
-      {character && (
+      {entity && (
         <>
           <Row>
             <Col xs={16} sm={10} md={6} lg={8} xl={6}>
-              <img src={getCharacterImage(character.url)} alt={'Character'} />
+              <img src={getEntityImage(name, entity.url)} alt={'Character'} />
             </Col>
-            <Info character={character} />
+            <Info entity={entity} />
           </Row>
         </>
       )}
