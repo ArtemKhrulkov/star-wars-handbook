@@ -19,33 +19,27 @@ const EntitiesContent: FC<EntitiesContentProps> = observer((props) => {
   const pageNum = searchParams.get('page');
 
   const [current, setCurrent] = useState<number | undefined>(
-    pageNum ? parseInt(pageNum) : undefined
+    pageNum ? parseInt(pageNum) : 1
   );
 
   const onChangeHandler: PaginationProps['onChange'] = (page) => {
     setCurrent(page);
+
+    if (searchParams.has('search')) {
+      setSearchParams({
+        search: searchParams.get('search') || '',
+        page: page.toString(),
+      });
+    } else {
+      setSearchParams({ page: page.toString() });
+    }
   };
 
   useEffect(() => {
     if (pageNum) {
       setCurrent(parseInt(pageNum));
-    } else {
-      setCurrent(1);
     }
   }, [pageNum]);
-
-  useEffect(() => {
-    if (current) {
-      if (searchParams.has('search')) {
-        setSearchParams({
-          search: searchParams.get('search') || '',
-          page: current.toString(),
-        });
-      } else {
-        setSearchParams({ page: current.toString() });
-      }
-    }
-  }, [current]);
 
   return (
     <Content style={{ padding: '70px 10px' }}>

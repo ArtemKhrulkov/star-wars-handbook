@@ -3,7 +3,7 @@ import { observer } from 'mobx-react-lite';
 import { useStores } from 'hooks/useStores';
 import { useDebounce } from 'hooks/useDebounce';
 
-import { useSearchParams } from 'react-router-dom';
+import { useLocation, useSearchParams } from 'react-router-dom';
 import { AppCards } from 'components/AppCards';
 import { SkeletonCards } from 'components/Skeletons';
 
@@ -17,6 +17,7 @@ type EntitiesProps = {
 
 const Entities: FC<EntitiesProps> = observer((props) => {
   const { name } = props;
+  const { pathname } = useLocation();
   const [searchParams, setSearchParams] = useSearchParams();
   const search = searchParams.get('search');
 
@@ -42,6 +43,10 @@ const Entities: FC<EntitiesProps> = observer((props) => {
   };
 
   useEffect(() => {
+    setSearchValue(undefined);
+  }, [pathname]);
+
+  useEffect(() => {
     setSearchParams({ search: debouncedSearchValue || '' });
   }, [debouncedSearchValue]);
 
@@ -59,7 +64,6 @@ const Entities: FC<EntitiesProps> = observer((props) => {
         rootStore.fetchEntitiesBySearch(name, searchParams.get('search'));
       }
 
-      const search = searchParams.get('search');
       setSearchValue(search || '');
     } else {
       rootStore.fetchEntitiesByPage(name, searchParams.get('page'));
@@ -81,7 +85,7 @@ const Entities: FC<EntitiesProps> = observer((props) => {
         }}
       >
         <Search
-          placeholder="Search characters..."
+          placeholder="Search..."
           size="large"
           style={{ width: 350 }}
           value={searchValue}
