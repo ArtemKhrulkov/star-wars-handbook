@@ -14,42 +14,42 @@ class VehiclesStore {
   }
 
   async fetchVehiclesByPage(page: string | null) {
-    this.rootStore.isLoading = true;
+    this.rootStore.setLoading(true);
 
     const { data } = await Api.get(`/vehicles/?page=${page}`);
     this.setVehicles(data);
 
-    this.rootStore.isLoading = false;
+    this.rootStore.setLoading(false);
   }
 
   async fetchVehiclesBySearch(search: string | null) {
-    this.rootStore.isLoading = true;
+    this.rootStore.setLoading(true);
 
     const { data } = await Api.get(`/vehicles/?search=${search}`);
     this.setVehicles(data);
 
-    this.rootStore.isLoading = false;
+    this.rootStore.setLoading(false);
   }
 
   async fetchVehiclesBySearchAndPage(
     search: string | null,
     page: string | null
   ) {
-    this.rootStore.isLoading = true;
+    this.rootStore.setLoading(true);
 
     const { data } = await Api.get(`/vehicles/?search=${search}&page=${page}`);
     this.setVehicles(data);
 
-    this.rootStore.isLoading = false;
+    this.rootStore.setLoading(false);
   }
 
   async fetchVehicleById(id: string | undefined) {
-    this.rootStore.isLoading = true;
+    this.rootStore.setLoading(true);
 
     const { data } = await Api.get(`/vehicles/${id}`);
     this.setCurrentVehicle(data);
 
-    this.rootStore.isLoading = false;
+    this.rootStore.setLoading(false);
   }
 
   setVehicles(vehicles: CharactersType) {

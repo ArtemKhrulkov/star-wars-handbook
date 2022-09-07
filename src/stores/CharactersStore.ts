@@ -14,42 +14,42 @@ class CharactersStore {
   }
 
   async fetchCharactersByPage(page: string | null) {
-    this.rootStore.isLoading = true;
+    this.rootStore.setLoading(true);
 
     const { data } = await Api.get(`/people/?page=${page}`);
     this.setCharacters(data);
 
-    this.rootStore.isLoading = false;
+    this.rootStore.setLoading(false);
   }
 
   async fetchCharactersBySearch(search: string | null) {
-    this.rootStore.isLoading = true;
+    this.rootStore.setLoading(true);
 
     const { data } = await Api.get(`/people/?search=${search}`);
     this.setCharacters(data);
 
-    this.rootStore.isLoading = false;
+    this.rootStore.setLoading(false);
   }
 
   async fetchCharactersBySearchAndPage(
     search: string | null,
     page: string | null
   ) {
-    this.rootStore.isLoading = true;
+    this.rootStore.setLoading(true);
 
     const { data } = await Api.get(`/people/?search=${search}&page=${page}`);
     this.setCharacters(data);
 
-    this.rootStore.isLoading = false;
+    this.rootStore.setLoading(false);
   }
 
   async fetchCharacterById(id: string | undefined) {
-    this.rootStore.isLoading = true;
+    this.rootStore.setLoading(true);
 
     const { data } = await Api.get(`/people/${id}`);
     this.setCurrentCharacter(data);
 
-    this.rootStore.isLoading = false;
+    this.rootStore.setLoading(false);
   }
 
   setCharacters(characters: CharactersType) {

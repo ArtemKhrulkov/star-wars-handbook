@@ -14,42 +14,42 @@ class SpeciesStore {
   }
 
   async fetchSpeciesByPage(page: string | null) {
-    this.rootStore.isLoading = true;
+    this.rootStore.setLoading(true);
 
     const { data } = await Api.get(`/species/?page=${page}`);
     this.setSpecies(data);
 
-    this.rootStore.isLoading = false;
+    this.rootStore.setLoading(false);
   }
 
   async fetchSpeciesBySearch(search: string | null) {
-    this.rootStore.isLoading = true;
+    this.rootStore.setLoading(true);
 
     const { data } = await Api.get(`/species/?search=${search}`);
     this.setSpecies(data);
 
-    this.rootStore.isLoading = false;
+    this.rootStore.setLoading(false);
   }
 
   async fetchSpeciesBySearchAndPage(
     search: string | null,
     page: string | null
   ) {
-    this.rootStore.isLoading = true;
+    this.rootStore.setLoading(true);
 
     const { data } = await Api.get(`/species/?search=${search}&page=${page}`);
     this.setSpecies(data);
 
-    this.rootStore.isLoading = false;
+    this.rootStore.setLoading(false);
   }
 
   async fetchSpecieById(id: string | undefined) {
-    this.rootStore.isLoading = true;
+    this.rootStore.setLoading(true);
 
     const { data } = await Api.get(`/species/${id}`);
     this.setCurrentSpecie(data);
 
-    this.rootStore.isLoading = false;
+    this.rootStore.setLoading(false);
   }
 
   setSpecies(species: CharactersType) {

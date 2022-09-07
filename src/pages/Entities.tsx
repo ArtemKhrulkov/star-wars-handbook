@@ -20,6 +20,7 @@ const Entities: FC<EntitiesProps> = observer((props) => {
   const { pathname } = useLocation();
   const [searchParams, setSearchParams] = useSearchParams();
   const search = searchParams.get('search');
+  const page = searchParams.get('page');
 
   const [searchValue, setSearchValue] = useState<string | undefined>(
     search || undefined
@@ -47,28 +48,37 @@ const Entities: FC<EntitiesProps> = observer((props) => {
   }, [pathname]);
 
   useEffect(() => {
-    setSearchParams({ search: debouncedSearchValue || '' });
+    if (debouncedSearchValue) {
+      setSearchParams({
+        search: debouncedSearchValue || '',
+        page: searchParams.get('page') || '1',
+      });
+    } else {
+      setSearchParams({ page: '1' });
+    }
   }, [debouncedSearchValue]);
 
   useEffect(() => {
-    if (isPageUndefined && isSearchUndefined) {
-      setSearchParams({ page: '1' });
+    if (searchParams.has('search') && searchParams.has('page')) {
+      rootStore.fetchEntitiesBySearchAndPage(
+        name,
+        searchParams.get('search'),
+        searchParams.get('page')
+      );
     } else if (searchParams.has('search')) {
-      if (searchParams.has('page')) {
-        rootStore.fetchEntitiesBySearchAndPage(
-          name,
-          searchParams.get('search'),
-          searchParams.get('page')
-        );
-      } else {
-        rootStore.fetchEntitiesBySearch(name, searchParams.get('search'));
-      }
-
-      setSearchValue(search || '');
-    } else {
-      rootStore.fetchEntitiesByPage(name, searchParams.get('page'));
+      rootStore.fetchEntitiesBySearch(name, search);
     }
-  }, [searchParams]);
+
+    setSearchValue(search || undefined);
+  }, [search]);
+
+  useEffect(() => {
+    if (isPageUndefined && isSearchUndefined) {
+      rootStore.fetchEntitiesByPage(name, '1');
+    } else if (searchParams.has('page')) {
+      rootStore.fetchEntitiesByPage(name, page);
+    }
+  }, [page]);
 
   if (isLoading) {
     return <SkeletonCards />;

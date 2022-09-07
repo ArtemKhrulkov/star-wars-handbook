@@ -14,42 +14,42 @@ class StarshipsStore {
   }
 
   async fetchStarshipsByPage(page: string | null) {
-    this.rootStore.isLoading = true;
+    this.rootStore.setLoading(true);
 
     const { data } = await Api.get(`/starships/?page=${page}`);
     this.setStarships(data);
 
-    this.rootStore.isLoading = false;
+    this.rootStore.setLoading(false);
   }
 
   async fetchStarshipsBySearch(search: string | null) {
-    this.rootStore.isLoading = true;
+    this.rootStore.setLoading(true);
 
     const { data } = await Api.get(`/starships/?search=${search}`);
     this.setStarships(data);
 
-    this.rootStore.isLoading = false;
+    this.rootStore.setLoading(false);
   }
 
   async fetchStarshipsBySearchAndPage(
     search: string | null,
     page: string | null
   ) {
-    this.rootStore.isLoading = true;
+    this.rootStore.setLoading(true);
 
     const { data } = await Api.get(`/starships/?search=${search}&page=${page}`);
     this.setStarships(data);
 
-    this.rootStore.isLoading = false;
+    this.rootStore.setLoading(false);
   }
 
   async fetchStarshipById(id: string | undefined) {
-    this.rootStore.isLoading = true;
+    this.rootStore.setLoading(true);
 
     const { data } = await Api.get(`/starships/${id}`);
     this.setCurrentStarship(data);
 
-    this.rootStore.isLoading = false;
+    this.rootStore.setLoading(false);
   }
 
   setStarships(starships: CharactersType) {
