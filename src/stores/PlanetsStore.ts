@@ -14,42 +14,42 @@ class PlanetsStore {
   }
 
   async fetchPlanetsByPage(page: string | null) {
-    this.rootStore.isLoading = true;
+    this.rootStore.setLoading(true);
 
     const { data } = await Api.get(`/planets/?page=${page}`);
     this.setPlanets(data);
 
-    this.rootStore.isLoading = false;
+    this.rootStore.setLoading(false);
   }
 
   async fetchPlanetsBySearch(search: string | null) {
-    this.rootStore.isLoading = true;
+    this.rootStore.setLoading(true);
 
     const { data } = await Api.get(`/planets/?search=${search}`);
     this.setPlanets(data);
 
-    this.rootStore.isLoading = false;
+    this.rootStore.setLoading(false);
   }
 
   async fetchPlanetsBySearchAndPage(
     search: string | null,
     page: string | null
   ) {
-    this.rootStore.isLoading = true;
+    this.rootStore.setLoading(true);
 
     const { data } = await Api.get(`/planets/?search=${search}&page=${page}`);
     this.setPlanets(data);
 
-    this.rootStore.isLoading = false;
+    this.rootStore.setLoading(false);
   }
 
   async fetchPlanetById(id: string | undefined) {
-    this.rootStore.isLoading = true;
+    this.rootStore.setLoading(true);
 
     const { data } = await Api.get(`/planets/${id}`);
     this.setCurrentPlanet(data);
 
-    this.rootStore.isLoading = false;
+    this.rootStore.setLoading(false);
   }
 
   setPlanets(planets: CharactersType) {

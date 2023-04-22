@@ -13,8 +13,9 @@ type EntitiesContentProps = {
 const EntitiesContent: FC<EntitiesContentProps> = observer((props) => {
   const { title } = props;
   const [searchParams, setSearchParams] = useSearchParams();
-  const { getEntities, isLoading } = useStores();
-  const entities = getEntities(title.toLowerCase());
+  const rootStore = useStores();
+  const { isLoading } = rootStore;
+  const entities = rootStore.getEntities(title.toLowerCase());
 
   const pageNum = searchParams.get('page');
 
@@ -30,14 +31,24 @@ const EntitiesContent: FC<EntitiesContentProps> = observer((props) => {
         search: searchParams.get('search') || '',
         page: page.toString(),
       });
+
+      rootStore.fetchEntitiesBySearchAndPage(
+        title.toLowerCase(),
+        searchParams.get('search'),
+        page.toString()
+      );
     } else {
       setSearchParams({ page: page.toString() });
+
+      rootStore.fetchEntitiesByPage(title.toLowerCase(), page.toString());
     }
   };
 
   useEffect(() => {
     if (pageNum) {
       setCurrent(parseInt(pageNum));
+    } else {
+      setCurrent(1);
     }
   }, [pageNum]);
 

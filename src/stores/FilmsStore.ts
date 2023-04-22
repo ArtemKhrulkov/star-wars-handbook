@@ -14,39 +14,39 @@ class FilmsStore {
   }
 
   async fetchFilmsByPage(page: string | null) {
-    this.rootStore.isLoading = true;
+    this.rootStore.setLoading(true);
 
     const { data } = await Api.get(`/films/?page=${page}`);
     this.setFilms(data);
 
-    this.rootStore.isLoading = false;
+    this.rootStore.setLoading(false);
   }
 
   async fetchFilmsBySearch(search: string | null) {
-    this.rootStore.isLoading = true;
+    this.rootStore.setLoading(true);
 
     const { data } = await Api.get(`/films/?search=${search}`);
     this.setFilms(data);
 
-    this.rootStore.isLoading = false;
+    this.rootStore.setLoading(false);
   }
 
   async fetchFilmsBySearchAndPage(search: string | null, page: string | null) {
-    this.rootStore.isLoading = true;
+    this.rootStore.setLoading(true);
 
     const { data } = await Api.get(`/films/?search=${search}&page=${page}`);
     this.setFilms(data);
 
-    this.rootStore.isLoading = false;
+    this.rootStore.setLoading(false);
   }
 
   async fetchFilmById(id: string | undefined) {
-    this.rootStore.isLoading = true;
+    this.rootStore.setLoading(false);
 
     const { data } = await Api.get(`/films/${id}`);
     this.setCurrentFilm(data);
 
-    this.rootStore.isLoading = false;
+    this.rootStore.setLoading(false);
   }
 
   setFilms(films: FilmsType) {

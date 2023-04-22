@@ -7,7 +7,7 @@ type InfoProps = {
 };
 
 const Info: FC<InfoProps> = ({ entity }: InfoProps) => (
-  <Col xs={16} sm={16} md={12} lg={8} xl={16}>
+  <Col xs={16} sm={16} md={12} lg={8} xl={16} offset={1}>
     <p>
       <strong>Name:</strong> {(entity as CharacterType).name}
     </p>

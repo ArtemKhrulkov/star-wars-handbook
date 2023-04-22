@@ -24,6 +24,10 @@ class RootStore {
     this.speciesStore = new SpeciesStore(this);
   }
 
+  setLoading = (value: boolean) => {
+    this.isLoading = value;
+  };
+
   getCurrentEntity = (name: string) => {
     switch (name) {
       case 'characters':
