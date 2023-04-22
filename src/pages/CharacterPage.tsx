@@ -32,7 +32,12 @@ const CharacterPage: FC<EntityPage> = observer((props) => {
         <>
           <Row>
             <Col xs={16} sm={10} md={6} lg={8} xl={6}>
-              <img src={getEntityImage(name, entity.url)} alt={'Character'} />
+              <img
+                width={350}
+                height={'auto'}
+                src={getEntityImage(name, entity.url)}
+                alt={'Character'}
+              />
             </Col>
             <Info entity={entity} />
           </Row>

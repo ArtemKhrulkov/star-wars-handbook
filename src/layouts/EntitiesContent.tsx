@@ -47,6 +47,8 @@ const EntitiesContent: FC<EntitiesContentProps> = observer((props) => {
   useEffect(() => {
     if (pageNum) {
       setCurrent(parseInt(pageNum));
+    } else {
+      setCurrent(1);
     }
   }, [pageNum]);
 

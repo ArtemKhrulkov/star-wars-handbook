@@ -1,7 +1,6 @@
 import { Space, Input } from 'antd';
 import { observer } from 'mobx-react-lite';
 import { useStores } from 'hooks/useStores';
-import { useDebounce } from 'hooks/useDebounce';
 
 import { useLocation, useSearchParams } from 'react-router-dom';
 import { AppCards } from 'components/AppCards';
@@ -19,72 +18,37 @@ const Entities: FC<EntitiesProps> = observer((props) => {
   const { name } = props;
   const { pathname } = useLocation();
   const [searchParams, setSearchParams] = useSearchParams();
-  const search = searchParams.get('search');
-  const page = searchParams.get('page');
 
-  const [searchValue, setSearchValue] = useState<string | undefined>(
-    search || undefined
-  );
+  const [searchValue, setSearchValue] = useState<string | undefined>(undefined);
 
   const rootStore = useStores();
   const { isLoading } = rootStore;
-
   const entities = rootStore.getEntities(name);
-  const debouncedSearchValue: string | undefined = useDebounce<
-    string | undefined
-  >(searchValue, 500);
 
-  const isSearchUndefined =
-    searchParams.get('search') === '' || !searchParams.has('search');
+  const getEntitiesWithParams = async (value: string) => {
+    await rootStore.fetchEntitiesBySearch(name, value);
 
-  const isPageUndefined = !searchParams.has('page');
+    setSearchParams({
+      search: value,
+    });
+  };
+
+  const onSearchHandler = (value: string) => {
+    getEntitiesWithParams(value);
+  };
 
   const onChangeHandler = (event: ChangeEvent<HTMLInputElement>) => {
     setSearchValue(event.target.value);
   };
 
   useEffect(() => {
-    setSearchValue(undefined);
+    getEntitiesWithParams(searchParams.get('search') || '');
+    setSearchValue(searchParams.get('search') || '');
   }, [pathname]);
 
-  useEffect(() => {
-    if (debouncedSearchValue) {
-      setSearchParams({
-        search: debouncedSearchValue || '',
-        page: searchParams.get('page') || '1',
-      });
-    } else {
-      setSearchParams({ page: '1' });
-    }
-  }, [debouncedSearchValue]);
-
-  useEffect(() => {
-    if (searchParams.has('search') && searchParams.has('page')) {
-      rootStore.fetchEntitiesBySearchAndPage(
-        name,
-        searchParams.get('search'),
-        searchParams.get('page')
-      );
-    } else if (searchParams.has('search')) {
-      rootStore.fetchEntitiesBySearch(name, search);
-    }
-
-    setSearchValue(search || undefined);
-  }, [search]);
-
-  useEffect(() => {
-    if (isPageUndefined && isSearchUndefined) {
-      rootStore.fetchEntitiesByPage(name, '1');
-    } else if (searchParams.has('page')) {
-      rootStore.fetchEntitiesByPage(name, page);
-    }
-  }, [page]);
-
-  if (isLoading) {
-    return <SkeletonCards />;
-  }
-
-  return (
+  return isLoading ? (
+    <SkeletonCards />
+  ) : (
     <>
       <Space
         direction="vertical"
@@ -101,6 +65,7 @@ const Entities: FC<EntitiesProps> = observer((props) => {
           value={searchValue}
           defaultValue={searchValue}
           onChange={onChangeHandler}
+          onSearch={onSearchHandler}
         />
       </Space>
       <Space
